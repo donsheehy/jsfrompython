@@ -668,8 +668,139 @@ In Python, the principal error handling mechanism is the `Exception`.
 
 ## String Processing
 
+The builtin `str` class for strings in Python comes equipped with many handy methods.
+
+#### String Literals
+
+Defining string literals can be done with single quotes, double quotes or triple-double quotes.
+The last of these is handy for long quotes that will span multiple lines.
+The `+` operator concatenates strings by creating a new string and `\n` is used as an escape sequence for newlines.
+
+```python {cmd}
+a = "A string"
+b = 'Another string'
+c = "This is 'okay'"
+d = 'This is also "okay"'
+print(c + '\n' + d)
+
+longstr = """
+This string
+takes
+up "several"
+'lines'.
+"""
+
+print(longstr)
+```
+
+Notices that `longstr` includes the leading and the trailing newline characters.
+
+In JS, we can also define string literals with single or double quotes.  We can then use backticks for longer strings.
+
+```node {cmd}
+const a = "A string";
+const b = 'Another string';
+const c = "This is 'okay'";
+const d = 'This is also "okay"';
+console.log(c + '\n' +  d);
+
+const longstr = `
+This string
+takes
+up "several"
+'lines'.
+`;
+
+console.log(longstr);
+```
+
+#### Interpolation
+
+String interpolation is sort of ugly in python.
+Filling in variables in particlular positions can be done with the C-like format strigns followed by the modulus (`%`) operator with the tuple of values.
+It is now prefered to use the `str.format` method.
+
+```python {cmd}
+x = 9
+y = 5
+point = "(%d, %d)" % (x, y+1)
+other = "({}, {})".format(x, y+1)
+print(point)
+print(other)
+```
+
+The backtick delimited strings in JS do a nicer job of this.
+
+```node {cmd}
+let x = 9;
+let y = 5;
+const point = `(${x}, ${y + 1})`;
+console.log(point);
+```
+
+#### Splitting and Joining
+
+```python {cmd}
+letters = 'abcd'
+print(list(letters))
+
+words = "He had a    gift for laughter."
+print(words.split())
+
+strings = ['one', 'two', 'three']
+print(', '.join(strings))
+```
+
+In JS, calling split without a separator gives an array of characters.
+To split on a separator, you can pass a separator, but if you look below, you'll see that it doesn't automatically treat consecutive separators as a single separator.
+Thankfully, you can pass a regular expression to the `split` method.
+In this case we passed `/\s+/` which matches any sequence of one or more whitespace characters.
+
+The biggest difference in the code below is that the role of the array and the string class are reversed for the `join` method.
+That is, `join` is an array method, not a string method.
+
+```node {cmd}
+const letters = 'abcd';
+console.log(letters.split());
+
+const words = "He had a    gift for laughter.";
+console.log(words.split(' '));
+console.log(words.split(/\s+/));
+
+const strings = ['one', 'two', 'three'];
+console.log(strings.join(', '));
+```
+
+
 ## Working with Files
+
+
 
 ### Read from a File
 
+```node {cmd}
+var fs = require('fs');
+
+fs.readFile('filetest.txt', function(err, buf) {
+  console.log(buf.toString());
+});
+```
+
 ### Write to a File
+
+
+```node {cmd}
+let fs = require('fs');
+
+let contents = "Contents of the\noutput file."
+
+fs.writeFile('outfiletest.txt', contents, function(err, data){
+    if (err) console.log(err);
+    console.log("Wrote to file.\n");
+});
+
+fs.readFile('outfiletest.txt', (err, buf) => {
+  console.log('File Contents:')
+  console.log(buf.toString())  
+});
+```
